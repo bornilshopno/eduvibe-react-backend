@@ -11,7 +11,7 @@ app.use(express.json())
 
 
 
-const uri = "mongodb+srv://BistroBoss:<db_password>@cluster0.pqwog.mongodb.net/?appName=Cluster0";
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.k5awq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
   serverApi: {
@@ -26,6 +26,33 @@ async function run() {
     // await client.connect();
     // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
+
+    const eduVibe = client.db('eduVibe')
+    const userCollection = eduVibe.collection('users')
+    const contactsCollection = eduVibe.collection('contacts')
+
+    app.get("/users", async (req, res) => {
+      try {
+        const users = await userCollection.find().toArray();
+        res.send(users);
+      } catch (error) {
+        res.status(500).send({ message: "Failed to fetch users" });
+      }
+    });
+
+    
+    app.post("/contacts", async (req, res) => {
+      try {
+        const newContact = req.body;
+        const result = await contactsCollection.insertOne(newContact);
+        res.send(result);
+      } catch (error) {
+        res.status(500).send({ message: "Failed to save contact" });
+      }
+    });
+    
+    
+
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
