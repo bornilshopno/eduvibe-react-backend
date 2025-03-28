@@ -1,14 +1,16 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const { Server } = require("socket.io");
-const http = require("http");
+const { Server } = require("socket.io"); // Socket io
+const http = require("http"); // ✅ HTTP module imported
 const { MongoClient, ServerApiVersion } = require('mongodb');
+
+
 
 const app = express();
 const port = process.env.PORT || 5000;
 
-// ✅ HTTP সার্ভার তৈরি
+// ✅ HTTP server created
 const server = http.createServer(app);
 
 // ✅ Socket.io server setup
@@ -25,14 +27,17 @@ app.use(cors());
 app.use(express.json());
 
 // ✅ WebSocket Events
-io.on("connection", (socket) => {
-  console.log("A user connected:", socket.id);
+//connection: Triggered when a user connects.
+io.on("connection", (socket) => { 
+  console.log("A user connected:", socket.id); 
 
-  socket.on("message", (msg) => {
+  //message: Listens for messages from clients
+  socket.on("message", (msg) => { 
     console.log("Message received:", msg);
-    io.emit("message", msg);
+    io.emit("message", msg); // Broadcasts to all clients
   });
 
+  //disconnect: Logs when a user leaves.
   socket.on("disconnect", () => {
     console.log("A user disconnected:", socket.id);
   });
