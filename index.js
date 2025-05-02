@@ -4,6 +4,7 @@ const cors = require("cors");
 const { Server } = require("socket.io"); // Socket io
 const http = require("http"); // ✅ HTTP module imported
 const { MongoClient, ServerApiVersion } = require("mongodb");
+const { ObjectId } = require("mongodb");
 
 const jwt = require("jsonwebtoken");
 // const { MongoClient, ServerApiVersion } = require('mongodb');
@@ -63,7 +64,6 @@ async function run() {
     const contactsCollection = eduVibe.collection("contacts");
     const courseCollection = eduVibe.collection("courses");
 
-    
     //JWT and Token Setting related API
     app.post("/jwt", async (req, res) => {
       const user = req.body; //called as data or payload
