@@ -61,7 +61,9 @@ async function run() {
     const eduVibe = client.db("eduVibe");
     const userCollection = eduVibe.collection("users");
     const contactsCollection = eduVibe.collection("contacts");
+    const courseCollection = eduVibe.collection("courses");
 
+    
     //JWT and Token Setting related API
     app.post("/jwt", async (req, res) => {
       const user = req.body; //called as data or payload
